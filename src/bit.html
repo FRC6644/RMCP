@@ -5,13 +5,18 @@
 <button on:click='compile()'>compile</button>
 <button on:click='decompile()'>decompile</button>
 <button on:click='clear()'>clear</button>
-<textarea style="resize:none;"></textarea>
+<button on:click='lex()'>lex</button>
+<textarea style="resize:none; height: 80%;" ref:input></textarea>
 <ul>
 { #each compiled as command }
 <p>{command}</p>
 {/each}
 </ul>
 <script>
+	import Lexer from './Lexer.js';
+	
+	let lexer = Lexer;
+	
 	class Command{
 		constructor(direction, distance){
 			this.direction = direction;
@@ -19,6 +24,7 @@
 		}
 	
 	}
+	
 	export default {
 		 data () {
 			return {
@@ -51,6 +57,11 @@
 				
 				}
 				console.log(temp);
+			},
+			lex(){
+				let l = new Lexer();
+				let data = l.lex(this.refs.input.value);
+				console.log(data);
 			},
 			compile(){
 				var list = this.get().compiled;
