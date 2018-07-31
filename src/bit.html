@@ -1,0 +1,84 @@
+<button on:click='addList("up")'>forward</button>
+<button on:click='addList("right")'>right</button>
+<button on:click='addList("down")'>back</button>
+<button on:click='addList("left")'>left</button>
+<button on:click='compile()'>compile</button>
+<button on:click='decompile()'>decompile</button>
+<button on:click='clear()'>clear</button>
+<textarea style="resize:none;"></textarea>
+<ul>
+{ #each compiled as command }
+<p>{command}</p>
+{/each}
+</ul>
+<script>
+	class Command{
+		constructor(direction, distance){
+			this.direction = direction;
+			this.distance = distance;
+		}
+	
+	}
+	export default {
+		 data () {
+			return {
+				compiled: [],
+			};
+		},
+		methods:{
+			clear(){
+				this.set({compiled: []});
+			},
+			decompile(){
+				let arr = this.compile();
+				let temp = [];
+				for(let i = 0 ; i < arr.length; i ++){
+					temp[i] = arr[i] >> 4;
+					switch(temp[i]){
+						case 4:
+							temp[i] = new Command('up', arr[i] & 0x0F);
+							break;
+						case 3:
+							temp[i] = new Command('down', arr[i] & 0x0F);
+							break;
+						case 2:
+							temp[i] = new Command('right', arr[i] & 0x0F);
+							break;
+						case 1: 
+							temp[i] = new Command('up', arr[i] & 0x0F);
+							break;
+					}
+				
+				}
+				console.log(temp);
+			},
+			compile(){
+				var list = this.get().compiled;
+				var arr = new Uint8Array(list.length);
+				for(let i = 0 ; i < list.length; i++){
+					switch(list[i]){
+						case 'up':
+							arr[i] = (4 << 4) | 15;
+							break;
+						case 'down':
+							arr[i] = (3 << 4) | 15;
+							break;
+						case 'right':
+							arr[i] = (2 << 4) | 8;
+							break;
+						case 'left':
+							arr[i] = (1 << 4) | 8;
+							break;
+					}
+				}
+				console.log(arr);
+				return arr;
+			},
+			addList(str){
+				let data = this.get();
+				data.compiled.push(str);
+				this.set({compiled:data.compiled});
+			}
+		}
+    };
+</script>
