@@ -14,6 +14,7 @@
 </ul>
 <script>
 	import Lexer from './Lexer.js';
+	import Compiler from './Compiler.js';
 	
 	let lexer = Lexer;
 	
@@ -60,8 +61,9 @@
 			},
 			lex(){
 				let l = new Lexer();
+				let c = new Compiler();
 				let data = l.lex(this.refs.input.value);
-				console.log(data);
+				console.log(c.compile(data));
 			},
 			compile(){
 				var list = this.get().compiled;

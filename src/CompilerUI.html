@@ -1,0 +1,44 @@
+<textarea style="resize:none; height: 80%; width: 30%;" ref:input></textarea>
+<textarea style="resize:none; height: 80%; width: 30%; user-select: none;" ref:output></textarea>
+<button on:click="compile()">Compile</button>
+
+<script>
+	import Lexer from './Lexer.js';
+	import Compiler from './Compiler.js';
+	
+	let l = new Lexer();
+	let c = new Compiler();
+	
+	export default {
+		methods: {
+			compile(){
+				l.reset();
+				
+				console.log(this.refs.input.value);
+				let tokTree = l.lex(this.refs.input.value);
+				let compiled = c.compile(tokTree);
+				console.log(tokTree);
+				console.log(compiled);
+				
+				let data = 'int a[] = new int[] {';
+				
+				for(let i = 0; i != compiled.length - 1; i++){
+					data += compiled[i] + ', ';
+				}
+				
+				data += compiled[compiled.length - 1] + '};';
+				
+				console.log(data);
+				
+				this.refs.output.value = data;
+			}
+		},
+		oncreate(){
+			this.refs.input.value = 'forward 0.6\n'+
+			'back 0.1\n' +
+			'right 30\n' + 
+			'left 20\n' +
+			'forward 4';
+		}
+	}
+</script>

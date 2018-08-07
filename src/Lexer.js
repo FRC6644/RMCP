@@ -22,6 +22,10 @@ class Token{
 }
 
 export default class Lexer{
+	static get Token(){
+		return Token;
+	}
+	
 	constructor(){
 		//Inspired by LLVM's Kaleidoscope but adapted to robotics in gay es.
 		this.tree = [];
@@ -31,6 +35,8 @@ export default class Lexer{
 	
 	reset(){
 		this.tree.length = 0;
+		this.input = '';
+		this.index = 0;
 	}
 		
 	lex(str){
@@ -52,6 +58,7 @@ export default class Lexer{
 				
 				case Token.NUM: {
 					this.tree.push(token);
+					break;
 				}
 			}
 			

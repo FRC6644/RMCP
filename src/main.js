@@ -1,3 +1,4 @@
 import Bit from './bit.html';
+import CompilerUI from './CompilerUI.html';
 
-	export default Bit;
+export {Bit, CompilerUI};
